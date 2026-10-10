@@ -107,7 +107,7 @@ The skills check things the way a real user would, so they work best when these 
 |---|---|---|
 | **Node.js 18+** | the `npx skills` install, and most verification scripts | [nodejs.org](https://nodejs.org) |
 | **git** | diffs, before/after checks | usually already installed |
-| **Playwright** | driving a real browser for web apps: login, clicks, screenshots, console and network logs | `npm install -D playwright && npx playwright install chromium` (Python: `pip install playwright && playwright install chromium`) |
+| **Playwright** | driving a real browser for web apps: login, clicks, screenshots, console and network logs | `npm init playwright@latest` (asks a few questions, then adds Playwright, its browsers, a config and an example test). Python: `pip install playwright && playwright install chromium` |
 | **curl** | calling APIs the way a client would | usually already installed |
 
 You don't have to install Playwright up front. `setup-agent-workspace` notices when a web app needs it and asks before adding it as a dev dependency. Without it, `verify` can't use the frontend and will report `INCONCLUSIVE` for anything a user sees.
