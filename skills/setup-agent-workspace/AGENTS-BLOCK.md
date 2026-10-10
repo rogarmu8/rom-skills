@@ -1,4 +1,4 @@
-<!-- rom-skills:start v0.1.0 -->
+<!-- rom-skills:start v0.1.1 -->
 ## Agent workspace (`.agents/`)
 
 `.agents/` holds what a developer on this team knows that the code doesn't say. The code is the source of truth.

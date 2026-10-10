@@ -99,6 +99,19 @@ Add `-l` to declare it in the project's `.pi/settings.json` instead.
 
 </details>
 
+## Recommended tools
+
+The skills check things the way a real user would, so they work best when these are available:
+
+| Tool | Needed for | Install |
+|---|---|---|
+| **Node.js 18+** | the `npx skills` install, and most verification scripts | [nodejs.org](https://nodejs.org) |
+| **git** | diffs, before/after checks | usually already installed |
+| **Playwright** | driving a real browser for web apps: login, clicks, screenshots, console and network logs | `npm install -D playwright && npx playwright install chromium` (Python: `pip install playwright && playwright install chromium`) |
+| **curl** | calling APIs the way a client would | usually already installed |
+
+You don't have to install Playwright up front. `setup-agent-workspace` notices when a web app needs it and asks before adding it as a dev dependency. Without it, `verify` can't use the frontend and will report `INCONCLUSIVE` for anything a user sees.
+
 ## Use
 
 In each repo, run `setup-agent-workspace` first. The other skills check for it and will ask you to run it.

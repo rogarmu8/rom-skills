@@ -12,7 +12,7 @@ Map the repo so every later session starts with the context a developer on the t
 
 ## 1. Scaffold
 
-- Create `.agents/features/`, `.agents/scripts/` and `.agents/local/` if missing.
+- Create `.agents/features/`, `.agents/scripts/` and `.agents/local/` if missing, even while they're still empty. The user will put files in `.agents/local/` themselves.
 - Add `.agents/local/` to `.gitignore` if it isn't there.
 - Put the contents of [AGENTS-BLOCK.md](AGENTS-BLOCK.md) in `AGENTS.md`, creating the file if needed:
   - **No block yet:** append it.
