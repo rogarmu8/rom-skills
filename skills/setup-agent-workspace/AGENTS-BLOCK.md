@@ -1,4 +1,4 @@
-<!-- rom-skills:start v0.1.1 -->
+<!-- rom-skills:start v0.1.2 -->
 ## Agent workspace (`.agents/`)
 
 `.agents/` holds what a developer on this team knows that the code doesn't say. The code is the source of truth.
@@ -59,13 +59,16 @@ Never commit, push or open a PR unless the user asks.
 
 ### Verification scripts (`.agents/scripts/`)
 - Drive the real interface the way its users do: a browser through the frontend for web, HTTP calls like a client for APIs, the real command for CLIs, a small example program for libraries.
-- Use the repo's own tools. If a browser driver is needed and there isn't one, ask to add a standard one (Playwright) as a dev dependency. Never write your own driver.
+- Use the repo's own tools. If a browser driver is needed and there isn't one, ask to add Playwright as a dev dependency (`@playwright/test` in Node projects). Keep to one driver package, the one the project already has if any. Never write your own driver.
 - Exit 0 on pass, non-zero on fail.
 - Save evidence to the `--out <dir>` you're given, defaulting to `.agents/local/evidence/<script>/`. Evidence means screenshots, responses, and console, network and server logs.
 - Start with a header comment: what it checks, `needs:` (what must be running), `touches:` (`none`, `db` or `irreversible`).
 - Read credentials from `.agents/local/.env`, and list the variable names in `.agents/scripts/.env.example`. Use test accounts only, and never hardcode secrets.
 - Shortcuts are fine for setup, never for the thing being checked.
 - When you're done, stop the servers and processes you started, unless the user wants them left running.
+
+### Reporting
+Report what actually happened, not what you meant to do. If a command was blocked or failed, check the real state (files, packages, processes) before saying what's done. Call a blocked command blocked; never present it as the user's decision.
 
 ### Style
 Be concise and use plain words. If you need a technical term, explain it in a few words the first time. No filler.

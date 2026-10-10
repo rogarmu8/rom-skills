@@ -1,6 +1,6 @@
 {
   "name": "rom-skills",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "MIT",
   "description": "Small agent skills for software development: map the repo, spec, implement, patch, explain and verify.",

@@ -70,7 +70,7 @@ Never soften a failure.
 
 ## 7. Fix what fails
 
-If a criterion is `NOT VERIFIED`: find the cause, fix it following "Writing code" in AGENTS.md, then verify it again. Ask the user only if the fix needs a decision (the spec is unclear or wrong, or it's a product choice), or if it still fails after three attempts.
+If a criterion is `NOT VERIFIED`: find the cause, fix it following "Writing code" in AGENTS.md, then verify it again. After any change you make, including to dependencies, re-run what it could affect: the criterion, the regression checks and the test suite, plus the build if dependencies or config changed. Ask the user only if the fix needs a decision (the spec is unclear or wrong, or it's a product choice), or if it still fails after three attempts.
 
 ## 8. Scope check
 

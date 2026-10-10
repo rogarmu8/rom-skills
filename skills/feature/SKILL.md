@@ -26,7 +26,7 @@ Format each question like this, and word it so "yes" accepts your recommendation
 ➡️ <your recommended answer>
 ```
 
-- **Facts are your job; decisions are the user's.** Never ask something you could look up in the code, docs or tools. Look it up yourself, using a sub-agent if your tool has them. Only the questions that depend on that answer wait for it.
+- **Facts are your job; decisions are the user's.** Never ask something you could look up in the code, docs or tools, and check `.agents/` (feature files, repo map, glossary) first. Look it up yourself, using a sub-agent if your tool has them. Only the questions that depend on that answer wait for it.
 - **Challenge the words.** If the user uses a term that conflicts with the glossary, or a vague term like "account", say so and propose the precise word.
 - **Invent edge-case scenarios** that force precise answers: "A user exports while an order is being cancelled. Is it in the file?"
 - **Check what the user says against the code.** If they don't match, point it out: "The code cancels whole orders, but you said partial cancels are possible. Which is right?"
