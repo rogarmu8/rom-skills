@@ -1,0 +1,16 @@
+{
+  "name": "rom-skills",
+  "owner": {
+    "name": "rogarmu8",
+    "url": "https://github.com/rogarmu8"
+  },
+  "description": "rogarmu8's agent skills for software development.",
+  "plugins": [
+    {
+      "name": "rom-skills",
+      "source": "./",
+      "description": "Map the repo, spec, implement, patch, explain and verify.",
+      "category": "engineering"
+    }
+  ]
+}

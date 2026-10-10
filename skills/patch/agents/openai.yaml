@@ -1,0 +1,5 @@
+interface:
+  display_name: "Patch"
+  short_description: "Small changes and bug fixes, end to end"
+policy:
+  allow_implicit_invocation: false

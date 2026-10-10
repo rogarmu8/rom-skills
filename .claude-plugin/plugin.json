@@ -1,0 +1,20 @@
+{
+  "name": "rom-skills",
+  "version": "0.1.0",
+  "description": "Small agent skills for software development: map the repo, spec, implement, patch, explain and verify.",
+  "author": {
+    "name": "rogarmu8",
+    "url": "https://github.com/rogarmu8"
+  },
+  "repository": "https://github.com/rogarmu8/rom-skills",
+  "license": "MIT",
+  "keywords": ["skills", "spec", "tdd", "verification"],
+  "skills": [
+    "./skills/setup-agent-workspace",
+    "./skills/feature",
+    "./skills/implement",
+    "./skills/patch",
+    "./skills/explain",
+    "./skills/verify"
+  ]
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Feature"
+  short_description: "Interview until clear, then write a spec"
+policy:
+  allow_implicit_invocation: false

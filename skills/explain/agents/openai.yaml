@@ -1,0 +1,5 @@
+interface:
+  display_name: "Explain"
+  short_description: "Explain a diff block by block in plain words"
+policy:
+  allow_implicit_invocation: false

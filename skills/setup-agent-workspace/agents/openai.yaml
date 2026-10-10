@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Agent Workspace"
+  short_description: "Map the repo into .agents/ and add shared rules"
+policy:
+  allow_implicit_invocation: false
