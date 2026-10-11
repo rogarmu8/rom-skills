@@ -9,7 +9,7 @@
     {
       "name": "rom-skills",
       "source": "./",
-      "description": "Map the repo, spec, implement, patch, explain and verify.",
+      "description": "Map the repo, spec, implement, patch, explain, review and verify.",
       "category": "engineering"
     }
   ]

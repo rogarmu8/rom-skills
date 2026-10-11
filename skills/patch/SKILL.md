@@ -6,18 +6,18 @@ disable-model-invocation: true
 
 # Patch
 
-A short version of `feature` + `implement` for small work: a bug fix, a tweak, a copy change, a small addition.
+A short version of `feature` + `implement` for small work: a bug fix, a tweak, a copy change, a small addition, a small refactor or upgrade.
 
-**Changes:** app code and tests (only after the user says go), the patch spec, and the feature file.
+**Changes:** app code, tests and the project's own docs (only after the user says go), the patch spec, and the feature file.
 
 ## Before you start
 
-- Read `AGENTS.md` and follow its rules, especially "Writing code" and "Writing tests". If `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
+- Read `AGENTS.md` at the repo root (not the current folder, which may be a subproject) and follow its rules, especially "Writing code" and "Writing tests". If the root's `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
 - Use `.agents/features/README.md` to find the feature involved, then read its feature file and the code.
 
 ## 1. Understand
 
-- **A bug:** reproduce it yourself first, through the real interface (browser, HTTP call, CLI command) and the logs. Find the **cause**, not just where it shows up. If you can't reproduce it, say what you tried.
+- **A bug:** reproduce it yourself first, through the real interface (browser, HTTP call, CLI command, app, device, input to a worker) and the logs. Find the **cause**, not just where it shows up. If you can't reproduce it, say what you tried.
 - **A change:** find where it belongs, and check what else uses that code.
 - **Ask only what you can't find out,** such as the expected behavior or which users are affected. Often that's nothing. Put each question with your recommended answer, worded so "yes" accepts it.
 
@@ -34,6 +34,7 @@ Feature file: .agents/features/<feature>.md
 Goal: <what should be true after this>
 Repro: <steps → what happens instead>   (bugs only)
 Cause: <one line>                       (bugs only)
+Compatibility: <what must keep working>  (delete unless it changes a schema, contract, public API or deployed thing)
 
 ## Criteria
 - [ ] 1. <observable result>
@@ -48,15 +49,15 @@ In two or three lines, say what's wrong (or what's needed), what you'll change, 
 
 ## 4. Build and check
 
-1. Set `Status: implementing`.
-2. **Failing test first** when there's logic or a bug: one test, at the public interface, that fails because of the problem. Trivial changes (copy, styling, config values) get no test.
+1. Set `Status: implementing`, add the `Base:` line (see "Specs" in AGENTS.md), and run the baseline checks from "Before calling it done".
+2. **Failing test first** when there's logic or a bug: one test, at the public interface, that fails because of the problem. Trivial changes (copy, styling, config values) get no test. If the area has no test setup, follow "Writing tests" in AGENTS.md.
 3. Make the smallest clean change that fixes the cause.
-4. Run the new test, the tests nearby, and the type checker.
-5. **Check it like a user would:** repeat the reproduction, or the new behavior, through the real interface. Look at the logs too (browser console, network, server output), and confirm there are no new errors. Use `.agents/scripts/` if a script covers it.
+4. Run the new test and the tests nearby, then everything in "Before calling it done" in AGENTS.md.
+5. **Check it like a user would:** repeat the reproduction, or the new behavior, through the real interface. Look at the logs too (whatever the interface has: browser console and network, stderr, server, app or device output), and confirm there are no new errors. Use `.agents/scripts/` if a script covers it.
    - Running a piece of the code on its own isn't using the real interface. If you can't drive it (for example, there's no browser driver), say so plainly, write down what you checked instead, and offer to add what's missing.
 6. Re-read the diff and cut anything not needed.
-7. Tick only the criteria you actually checked through the real interface, and leave the rest unticked. Set `Status: done` only if every criterion is ticked. Add a `Log` line describing what you checked and how.
-8. If you learned something the code doesn't show, like a gotcha or how to test this, add it to the feature file.
+7. Tick criteria following "Specs" in AGENTS.md. Set `Status: done` (and move the spec to `specs/done/`) only if every criterion is ticked. Add a `Log` line describing what you checked and how.
+8. If you learned something the code doesn't show, like a gotcha or how to test this, add it to the feature file (create it if missing, and add it to the list in `.agents/features/README.md`). Update the project's own docs per "Before calling it done".
 
 ## Finish
 

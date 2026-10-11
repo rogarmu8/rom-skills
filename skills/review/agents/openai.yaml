@@ -1,0 +1,5 @@
+interface:
+  display_name: "Review"
+  short_description: "Review someone else's branch or PR with no prior context"
+policy:
+  allow_implicit_invocation: false

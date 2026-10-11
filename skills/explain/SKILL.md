@@ -1,22 +1,23 @@
 ---
 name: explain
-description: Walk me through a diff block by block, saying what each change does in plain words and adding technical detail only where it's hard to follow. Read-only. Defaults to this branch's changes; pass a commit, range, branch, file or spec slug.
+description: Walk me through a diff, or how a feature or area works, block by block, saying what each change does in plain words and adding technical detail only where it's hard to follow. Read-only. Defaults to this branch's changes; pass a commit, range, branch, file, spec slug, or a feature or area name.
 disable-model-invocation: true
 ---
 
 # Explain
 
-Help the user understand a change quickly, as a teammate would explain it at their desk.
+Help the user understand a change, or how part of the code works, quickly, as a teammate would explain it at their desk.
 
 **Read-only.** Never edit anything.
 
 ## Before you start
 
-- Read `AGENTS.md` and follow its rules. If `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make explanations better, then carry on.
+- Read `AGENTS.md` at the repo root (not the current folder, which may be a subproject) and follow its rules. If the root's `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make explanations better, then carry on.
 - **Work out what to explain:**
   - Nothing given: everything on this branch that isn't on the base branch yet, committed and uncommitted.
   - A commit, range, branch or file: that.
-  - A spec slug: the changes made for `.agents/local/specs/<slug>.md`.
+  - A spec slug: the spec's changes (see "Specs" in AGENTS.md).
+  - A feature or area name: how it works today, not a diff. Start from its feature file's `Code` section (or the area in the repo map) and explain the code the same way, with steps of the flow as the blocks. Skip the spec links.
 - Read the spec if there is one, plus `.agents/GLOSSARY.md` and the feature files involved. Use their words.
 
 ## How to explain

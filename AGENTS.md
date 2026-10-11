@@ -16,7 +16,7 @@ Agent skills for software development that work in Claude Code, Codex, Pi and VS
 - **Portable.** Don't name tools specific to one agent (`AskUserQuestion`, "the Skill tool"…). Sub-agents are always optional ("if your tool has them"). Skills don't call other skills; they tell the user which one to run next.
 - **Shared rules live in `AGENTS-BLOCK.md`, once.** If a rule applies in more than one skill, it goes in the block and skills point to it. The only thing repeated is the "Before you start" check, because it has to work before the block exists.
 - **Each skill states what it may change**, near the top.
-- **Short.** Keep each `SKILL.md` under about 100 lines, in one file. Cut something before adding a second file.
+- **Short.** Keep each `SKILL.md` under about 120 lines, in one file. Cut something before adding a second file.
 - **Plain words.** Same style rule as the block: concise, no jargon, no filler.
 
 ## Changing a skill
