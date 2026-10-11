@@ -127,6 +127,29 @@ In each repo, run `setup-agent-workspace` first. The other skills check for it a
 
 Pass the rest as arguments: `/feature let users export orders as CSV`, `/implement order-export`, `/patch the export button ignores the date filter`, `/verify order-export`, `/verify --all`, `/review feature/csv-export`, `/review 123`, `/review since v2.1`.
 
+## How to use
+
+**Once per repo:** `setup-agent-workspace`. It maps the repo, writes the shared rules into `AGENTS.md`, and asks you one round of questions. Run it again any time to bring the docs back in line with the code.
+
+**A small change or a bug:** `patch <what's wrong or what you want>`. It reproduces the bug, writes a short spec, proposes a fix and waits for your go. Then it writes a failing test, fixes the cause, runs the checks and tries it through the real app. If the work turns out bigger, it sends you to `feature`.
+
+**A new feature, refactor, upgrade or migration:**
+
+1. `feature <idea>`: it interviews you in rounds (each question comes with its recommended answer, so "yes" is often enough) and writes a spec. No code yet.
+2. `implement <slug>`: it asks whether to work on a new branch with a commit per criterion, then builds one criterion at a time, test first.
+3. `explain <slug>` (optional): what changed, in plain words.
+4. `verify <slug>`: it proves each criterion through the real app, checks the logs, fixes what fails, and marks the spec `done`.
+
+**A big feature** (more than about 8 criteria, or too long for one session): `feature` splits it into parts under a parent spec, each part saying which others it waits for. Then `implement <parent>` builds all of them on one branch, several at once if your agent has sub-agents, and `verify <parent>` checks them together, including one or two end-to-end checks.
+
+**Someone else's work:** `review <branch, PR number, or "since <commit or date>">`. It finds where the work started and what it was meant to do, then reports what it found under three headings: does it do what it set out to do, will it break, and does it follow the repo's rules.
+
+**Good to know:**
+
+- Specs live in `.agents/local/specs/`, gitignored and private to you. Each spec's `Log` tracks progress, so you can stop at any time and pick up in a new session with the same command.
+- Nothing is ever pushed. Commits happen only on a branch you agreed to.
+- Your agent asks before touching a database directly, flashing a device, or anything that can't be undone.
+
 ## What it adds to your repo
 
 ```

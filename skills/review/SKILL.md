@@ -26,6 +26,8 @@ Work out the starting point, then the diff (`git diff <start>...<end>`) and the 
 
 Fetch first if the branch is only on the remote. Check that the refs resolve and the diff isn't empty before going on. If the branch is far behind the base branch, say so in one line.
 
+**A large change** (more than a few hundred lines, or many areas): review it area by area, deepest where the risk is (contracts, data, auth, money), and say in the output which areas got only a light look. Skip generated code and lockfiles, but check they match the sources that produce them.
+
 ## 2. Find what it set out to do
 
 Use every source you find:
@@ -88,6 +90,7 @@ Offer once: "Run the checks on this branch?" On yes, create a `git worktree` of 
 ```md
 **Goal** (from: spec | PR | commits | inferred): <one or two sentences>
 **Reviewed:** `<start>...<end>`, N commits, N files
+**Light look only:** <areas> (large changes only; omit otherwise)
 
 ## Intent
 - blocker: `src/export.ts:42` exports cancelled orders, but the PR says they're excluded. Fix: filter on status before writing.

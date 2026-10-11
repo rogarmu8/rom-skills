@@ -1,4 +1,4 @@
-<!-- rom-skills:start v0.2.0 -->
+<!-- rom-skills:start v0.2.1 -->
 ## Agent workspace (`.agents/`)
 
 `.agents/` holds what a developer on this team knows that the code doesn't say. The code is the source of truth. There is one, at the repo root (`git rev-parse --show-toplevel`), even when you're working in a subfolder of a monorepo.
@@ -55,6 +55,8 @@ Never commit, push or open a PR unless the user asks. When the user agrees to `i
 - Follow the patterns already in the code. Ask before adding a dependency.
 - Simple over clever. No abstractions, options or future-proofing nobody asked for. Comments explain why, never what.
 - If the clean fix needs a bigger refactor, ask before doing it.
+- Secure by default. Validate input where it enters the system. Never build queries, shell commands or HTML by joining strings with input. Keep secrets out of code and logs, and keep the auth and permission checks that are there.
+- Stuck? If the same failure survives three attempts, stop: say what you tried and what you think is wrong, and ask.
 - Shared contracts (schemas, API specs, shared packages) have consumers elsewhere. When you change one, regenerate code with the repo's own command (never edit generated code by hand), update every consumer in the same change, and keep what's already deployed working (data, clients, devices) unless the spec says how it migrates.
 
 ### Writing tests
@@ -70,7 +72,8 @@ Never commit, push or open a PR unless the user asks. When the user agrees to `i
 
 ### Before calling it done
 - Run what CI runs, for every area you changed and every area that depends on it: tests, plus the linter, format check, type checker and build if the project has them. Use the build tool's own way to find affected areas if it has one. Run the whole repo only when asked.
-- Run these checks once before you change any code too, and note in the spec's `Log` what already fails. Only failures your change caused block you. Mention the old ones in one line; don't fix them unless asked.
+- When working from a spec, run these checks once before you change any code too, and note in the spec's `Log` what already fails. Only failures your change caused block you. Mention the old ones in one line; don't fix them unless asked.
+- Never make a check pass by weakening it: don't delete, skip or loosen tests, turn off lint rules, add ignore comments or `any`-style casts, or catch and ignore errors. If you think the check itself is wrong, say why and ask.
 - If the change affects something the project's own docs describe (README, user or API docs, a changelog it keeps), update them in the same change.
 
 ### Verification scripts (`.agents/scripts/`)

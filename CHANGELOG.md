@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.1
+
+Rules that keep code quality up, and easier to follow for everyone.
+
+- Never make a check pass by weakening it (deleting, skipping or loosening tests, turning off lint rules, ignore comments, swallowing errors). Ask instead.
+- The "run the checks before you start" rule only applies to work from a spec, so plain sessions aren't slowed down.
+- Three tries at the same failure, then stop and ask, in every skill and session (was only in `verify`).
+- Secure by default: validate input at the edges, no queries, commands or HTML built by joining strings, no secrets in code or logs, keep existing auth checks.
+- `implement <parent>` only resolves merge conflicts itself when both sides plainly stay whole; otherwise it shows the conflict and asks.
+- `feature` writes the test seams into the spec and asks only when there's a real trade-off, in plain words.
+- `review` handles large changes area by area and says what got only a light look.
+- README: a "How to use" walkthrough.
+
 ## 0.2.0
 
 Long features in parts, built in parallel, and a review skill. Ideas from Matt Pocock's `to-tickets`, `implement-spec` and `code-review`.

@@ -42,7 +42,7 @@ Write these as soon as something is settled; don't save them up for the end.
 
 ## Test seams
 
-A seam is a public boundary where tests can watch behavior without reaching inside, such as an API endpoint, a page or a CLI command. Propose as few seams as possible, as high up as possible, and prefer ones that already exist. Give each one a line on what it catches and what it misses, then confirm them with the user.
+A seam is a public boundary where tests can watch behavior without reaching inside, such as an API endpoint, a page or a CLI command. Propose as few seams as possible, as high up as possible, and prefer ones that already exist. Write each one in the spec with a line on what it catches and what it misses. Ask the user only when there's a real trade-off, in plain words: "A browser test catches more but takes a minute per run. OK?"
 
 ## Write the spec
 

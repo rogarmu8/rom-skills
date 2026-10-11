@@ -75,7 +75,7 @@ Give each criterion exactly one verdict, based on exit codes and evidence, not y
 
 ## 7. Fix what fails
 
-If a criterion is `NOT VERIFIED`: find the cause. If it's in logic, first write a test that fails because of it, following "Writing tests" in AGENTS.md. Fix it following "Writing code", then verify it again. After any change you make, including to dependencies, re-run what it could affect: the criterion, the regression checks and "Before calling it done" in AGENTS.md. Ask the user only if the fix needs a decision (the spec is unclear or wrong, or it's a product choice), or if it still fails after three attempts.
+If a criterion is `NOT VERIFIED`: find the cause. If it's in logic, first write a test that fails because of it, following "Writing tests" in AGENTS.md. Fix it following "Writing code", then verify it again. After any change you make, including to dependencies, re-run what it could affect: the criterion, the regression checks and "Before calling it done" in AGENTS.md. Ask the user only if the fix needs a decision (the spec is unclear or wrong, or it's a product choice), or if you're stuck (see "Writing code").
 
 ## 8. Scope check
 
