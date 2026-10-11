@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+- Skills check the version of the rules block in `AGENTS.md`. If it's older than the skill's minor version (0.2 here), they ask you to re-run `setup-agent-workspace`, so a skill never follows a rule the project doesn't have yet. Patch releases don't trigger it.
+- `setup-agent-workspace` can update only the rules block, without a full audit, if that's all you want.
+- The shared rules are split in two. The block in `AGENTS.md`, read in every session, is about half as long (about 800 words): rules for all work only. The rules only the skills need (specs, feature file format, verification scripts) moved to `.agents/WORKFLOW.md`, which setup copies and the skills read. Duplicates removed. Re-run `setup-agent-workspace` to get it; the skills ask you to if `WORKFLOW.md` is missing.
+
 ## 0.2.1
 
 Rules that keep code quality up, and easier to follow for everyone.

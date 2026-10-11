@@ -12,9 +12,9 @@ Prove it works with evidence a skeptical reviewer would accept. "It compiles", "
 
 ## Before you start
 
-- Read `AGENTS.md` at the repo root (not the current folder, which may be a subproject) and follow its rules, especially "Safety" and "Verification scripts". If the root's `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules, especially "Safety" and "Verification scripts". If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, tell the user to re-run `setup-agent-workspace` to update the rules, and stop.
 - **Work out what to check:**
-  - **A slug:** the acceptance criteria in the spec (see "Specs" in AGENTS.md). Set `Status: verifying`. Its changes are as "Specs" in AGENTS.md says; a parent spec without its own `Base:` uses its earliest part's. With no `Base:` at all, use the uncommitted changes and say so. If the spec has a `Branch:`, check that it's the one checked out.
+  - **A slug:** the acceptance criteria in the spec (see "Specs" in WORKFLOW.md). Set `Status: verifying`. Its changes are as "Specs" in WORKFLOW.md says; a parent spec without its own `Base:` uses its earliest part's. With no `Base:` at all, use the uncommitted changes and say so. If the spec has a `Branch:`, check that it's the one checked out.
   - **A parent spec** (it has `## Parts`): every part's criteria plus the parent's end-to-end ones, all against the combined code. Don't start until every part is at least `verifying`.
   - **A claim:** restate it so it could be proven false, with a condition, what you'll observe, and a threshold if there is one.
   - **`--all`:** see the last section.
@@ -31,7 +31,7 @@ Use the first option that really proves it:
 
 1. **An existing test already covers it:** run it.
 2. **Internal logic** (a calculation, a rule, a data transform): the project's test suite is enough.
-3. **Something a user sees or does:** it must be seen in the running app, through its real interface. Use the repo's e2e suite if it covers it. Otherwise use a script in `.agents/scripts/<feature>/`: run it if one exists, or write it if not, following the script rules in AGENTS.md. Only write scripts for what tests can't cover.
+3. **Something a user sees or does:** it must be seen in the running app, through its real interface. Use the repo's e2e suite if it covers it. Otherwise use a script in `.agents/scripts/<feature>/`: run it if one exists, or write it if not, following "Verification scripts" in WORKFLOW.md. Only write scripts for what tests can't cover.
 4. **Really can't be scripted** (an OTP, a native OS dialog): mark it `manual`, give the user exact steps and what to look for, and wait for their answer.
 
 ## 3. Use it like a real user

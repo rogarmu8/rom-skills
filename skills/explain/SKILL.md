@@ -12,11 +12,11 @@ Help the user understand a change, or how part of the code works, quickly, as a 
 
 ## Before you start
 
-- Read `AGENTS.md` at the repo root (not the current folder, which may be a subproject) and follow its rules. If the root's `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make explanations better, then carry on.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make explanations better, then carry on. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, say once that re-running it would update the rules, then carry on.
 - **Work out what to explain:**
   - Nothing given: everything on this branch that isn't on the base branch yet, committed and uncommitted.
   - A commit, range, branch or file: that.
-  - A spec slug: the spec's changes (see "Specs" in AGENTS.md).
+  - A spec slug: the spec's changes (see "Specs" in WORKFLOW.md).
   - A feature or area name: how it works today, not a diff. Start from its feature file's `Code` section (or the area in the repo map) and explain the code the same way, with steps of the flow as the blocks. Skip the spec links.
 - Read the spec if there is one, plus `.agents/GLOSSARY.md` and the feature files involved. Use their words.
 

@@ -12,7 +12,7 @@ Turn an idea into a spec that `implement` can build and `verify` can prove.
 
 ## Before you start
 
-- Read `AGENTS.md` at the repo root (not the current folder, which may be a subproject) and follow its rules. If the root's `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, tell the user to re-run `setup-agent-workspace` to update the rules, and stop.
 - Read `.agents/features/README.md`, the feature files this touches, `.agents/GLOSSARY.md` and the code involved.
 
 ## Interview

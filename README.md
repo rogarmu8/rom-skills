@@ -158,6 +158,7 @@ CLAUDE.md                 # contains "@AGENTS.md" so Claude Code reads the same 
 .agents/
 ├── skills/               # the skills themselves, if installed in the project
 ├── GLOSSARY.md           # what your domain words mean
+├── WORKFLOW.md           # rules for specs and scripts, read only by the skills (managed by setup)
 ├── features/
 │   ├── README.md         # repo map, how to run and test, repo-wide decisions
 │   └── <feature>.md      # why it exists, where the code starts, how to verify it, decisions

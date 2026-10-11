@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Map the repo so every later session starts with the context a developer on the team already has. Re-running is an audit: keep what's right, fix what drifted, add what's missing. Never wipe.
 
-**Writes only:** `.agents/`, the rom-skills block in `AGENTS.md`, one line in `CLAUDE.md`, one line in `.gitignore`. Never app code.
+**Writes only:** `.agents/` (including a copy of [WORKFLOW.md](WORKFLOW.md)), the rom-skills block in `AGENTS.md`, one line in `CLAUDE.md`, one line in `.gitignore`. Never app code.
 
 ## 1. Scaffold
 
@@ -19,8 +19,9 @@ Map the repo so every later session starts with the context a developer on the t
 - Put the contents of [AGENTS-BLOCK.md](AGENTS-BLOCK.md) in `AGENTS.md`, creating the file if needed:
   - **No block yet:** append it.
   - **Block exists, different version:** replace everything between the markers.
+- Copy [WORKFLOW.md](WORKFLOW.md) to `.agents/WORKFLOW.md` if it's missing or its version differs. It belongs to rom-skills; if the user edited it, show the changes that would be lost and ask first.
 - Make sure `CLAUDE.md` contains the line `@AGENTS.md`, creating the file with just that line if needed. Claude Code reads `CLAUDE.md`, and other agents read `AGENTS.md`.
-- Read the block and follow its rules from here on.
+- Read the block and `.agents/WORKFLOW.md`, and follow their rules from here on.
 
 ## 2. Survey
 
@@ -54,7 +55,7 @@ Follow "Keeping it true" in AGENTS.md: only write what the code can't say.
 - Postgres, not Mongo: reporting needs joins
 ```
 
-`.agents/features/<feature>.md`, using the four sections from AGENTS.md. Fill `What` and `Code`. Set `Verify` to `TODO: filled on first verify`, unless step 4 gives it a script you've run. Fill `Decisions` with the ones you found, or leave it empty.
+`.agents/features/<feature>.md`, using the four sections in `.agents/WORKFLOW.md`. Fill `What` and `Code`. Set `Verify` to `TODO: filled on first verify`, unless step 4 gives it a script you've run. Fill `Decisions` with the ones you found, or leave it empty.
 ```md
 # Order export
 ## What
@@ -83,7 +84,7 @@ Work out which chores later sessions will repeat: starting what has to be runnin
 - **Firmware:** starting means the simulator if there is one. Flashing a device needs approval each time.
 
 1. **Ask only what you can't find:** which test account to use, whether there's a test-mode bypass for 2FA, and so on. Put the values in `.agents/local/.env` and the variable names in `.agents/scripts/.env.example`.
-2. **Write each script** following the script rules in AGENTS.md, using the repo's own language and tools. If a browser driver like Playwright isn't installed yet, ask before adding it.
+2. **Write each script** following "Verification scripts" in `.agents/WORKFLOW.md`, using the repo's own language and tools. If a browser driver like Playwright isn't installed yet, ask before adding it.
 3. **Login that needs a person** (OAuth, 2FA, captcha): the script opens a visible browser, the user logs in once, and it saves the session to `.agents/local/auth/`. Later runs reuse that session.
 4. **Run each script and command once.** One that has never run doesn't count. Resetting data touches the database, so ask first.
 
@@ -92,6 +93,8 @@ Work out which chores later sessions will repeat: starting what has to be runnin
 Show a short summary: areas, the feature list, commands and scripts, and what you couldn't find. Then ask about anything open in a single round, each question with your recommended answer, worded so "yes" accepts it. If the repo's own agent rules conflict with the block, ask which one wins for each and apply the answer to the user's part of the file. Other typical questions are about feature boundaries ("Are Orders and Order export one feature or two?") and unclear words ("Is a 'workspace' the same as a 'team'?"). Apply the answers.
 
 ## Re-running (audit)
+
+If the user only wants the rules updated, do step 1 and stop.
 
 - Fix `Code` paths that moved and features whose code is gone. Ask before deleting a feature file.
 - Add new features and areas. Update `How to run` if commands changed.

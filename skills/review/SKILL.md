@@ -12,7 +12,7 @@ Review someone else's change the way a careful teammate would, starting from not
 
 ## Before you start
 
-- Read `AGENTS.md` at the repo root (not the current folder, which may be a subproject) and follow its rules. If the root's `.agents/features/README.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make reviews better, then carry on.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make reviews better, then carry on. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, say once that re-running it would update the rules, then carry on.
 
 ## 1. Pin what to review
 
