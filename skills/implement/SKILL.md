@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Build what the spec says, one acceptance criterion at a time, with the smallest clean change that does it.
 
-**Changes:** app code and tests, the project's own docs, the spec's status, checkboxes and log, and the feature file. Commits and branches only if the user agrees at the start.
+**Changes:** app code and tests, the project's own docs, the spec's status, checkboxes and log, and the feature file. Branches and commits only if the user agrees at the start.
 
 ## Before you start
 
@@ -18,7 +18,12 @@ Build what the spec says, one acceptance criterion at a time, with the smallest 
 - Read the feature file, `.agents/GLOSSARY.md` and the code in the area. Use the glossary's words in names.
 - **Part of a bigger feature** (`Part of:` under `Status`): read the parent spec, especially `Interface`, and the other parts' specs. Build only your part, against that interface, even if another part isn't built yet. If you find the interface doesn't work, stop and ask; don't change it on your own. Once agreed, update it in the parent spec.
 - **Resuming:** if the spec has a `Branch:` that isn't checked out, switch to it first (ask if there are uncommitted changes). If the `Log` has `NOT VERIFIED` entries, fix those first. Otherwise start at the first unticked criterion.
-- **Starting fresh** (no `Base:` yet): unless you were given a branch to work on, ask once: "Work on a new branch `<slug>` and commit after each criterion?" On yes, create it from the current branch. Record `Base:` (and `Branch:`) as "Specs" in WORKFLOW.md says, then run the baseline checks (see "Specs" in WORKFLOW.md).
+- **Starting fresh** (no `Base:` yet): ask the branch question (below), record `Base:`, `Branch:` and `Commits:` as "Specs" in WORKFLOW.md says, then run the baseline checks (see "Specs" in WORKFLOW.md).
+- **The branch question,** asked once:
+  - **On a feature branch,** or one the user named: stay on it, and ask "Commit on `<branch>` after each criterion?"
+  - **On a shared branch** (the repo's default, `main`, `master`, `develop`, or one that looks shared like `release/*`, `staging`, `production`), or with no branch checked out: ask "Create a branch `<slug>` for this, and commit after each criterion?" Never commit on a shared branch.
+  - **Creating a branch** (here, or whenever the user asks for one): create it from the current branch, named the way the repo names its branches (`feature/<slug>` if others look like that), and switch to it.
+  - If a file you need to change already has uncommitted changes that aren't yours, ask before your commits include it.
 - Set `Status: implementing`.
 
 ## Build in vertical slices
@@ -28,7 +33,7 @@ For each acceptance criterion, in order:
 1. **Red:** write one failing test at an agreed seam from the spec. Run it, and check it fails for the right reason. If the area has no test setup, see "No test setup" in WORKFLOW.md.
 2. **Green:** write the minimum code that makes it pass. Nothing for future criteria.
 3. Run that test and the nearby tests.
-4. Tick the criterion in the spec, following "Specs" in WORKFLOW.md. On the spec's branch, commit: `<slug>: <criterion in a few words>`.
+4. Tick the criterion in the spec, following "Specs" in WORKFLOW.md. With `Commits: yes`, commit: `<slug>: <criterion in a few words>`, or the repo's own message style if it has one.
 
 Never write all the tests first. Each slice should teach you something for the next.
 
@@ -54,20 +59,20 @@ If a criterion is impossible, contradicts the code, or misses a case you've foun
    - code the change made obsolete
    - tests that don't meet the test bar
 3. **Update the docs:** the feature file (create it if it doesn't exist yet, and add it to the list in `.agents/features/README.md`) if entry points moved or you made a decision worth keeping, and the project's own docs per "Before calling it done". A part built at the same time as others lists these under `Docs to update:` instead (see "Specs").
-4. **Update the spec:** set `Status: verifying`, and add a `Log` line (`implement: criteria 1–4 done, CI checks green`). On the spec's branch, commit what's left.
+4. **Update the spec:** set `Status: verifying`, and add a `Log` line (`implement: criteria 1–4 done, CI checks green`). With `Commits: yes`, commit what's left.
 5. **Tell the user** in two or three lines what changed. Then say: "Run `verify <slug>`."
 
 ## Building the parts
 
 For a parent spec, build its parts on one branch, so `verify <parent>` can check them together.
 
-1. **Ask once** for the whole feature: "Work on a new branch `<parent slug>`, with a branch per part merged into it?" Building parts at the same time needs a yes. On no, build them one after another in this checkout, without commits.
-2. Record `Base:` and `Branch:` on the parent spec, and run the baseline checks once there.
+1. **Ask the branch question once** for the whole feature, as above, adding "with a branch per part merged into it". Building parts at the same time needs commits on a feature branch. Without them, build the parts one after another, without commits.
+2. Record `Base:`, `Branch:` and `Commits:` on the parent spec, and run the baseline checks once there.
 3. **The frontier** is every part that isn't built yet (`Status` before `verifying`) and whose `Blocked by` parts are all built.
 4. **Build the frontier:**
-   - **Several parts, and your tool has sub-agents:** give each part its own sub-agent, in its own `git worktree` outside the repo, on a branch `<part slug>` created from the parent's branch. Tell it: the absolute paths to its spec and the parent spec in this checkout's `.agents/local/specs/`, to run the install from `How to run` first, to follow this skill for its spec on that branch, to run only its own areas' checks and never start the app, to follow "Parts built at the same time" in WORKFLOW.md, and, if it needs a decision (the spec or interface is wrong), to stop and report back instead of guessing. You ask the user and pass the answer on. If a part's worktree already exists from an earlier run, reuse it.
-   - **Otherwise:** build each part yourself, one after another, following this skill from "Before you start": on the parent's branch if there is one, without asking the branch question again.
+   - **Several parts, and your tool has sub-agents:** give each part its own sub-agent, in its own `git worktree` outside the repo, on a branch `<part slug>` created from the parent's branch. Tell it: the absolute paths to its spec and the parent spec in this checkout's `.agents/local/specs/`, to run the install from `How to run` first, to follow this skill for its spec on that branch with `Commits: yes` (no branch question), to run only its own areas' checks and never start the app, to follow "Parts built at the same time" in WORKFLOW.md, and, if it needs a decision (the spec or interface is wrong), to stop and report back instead of guessing. You ask the user and pass the answer on. If a part's worktree already exists from an earlier run, reuse it.
+   - **Otherwise:** build each part yourself, one after another, following this skill from "Before you start": on the parent's branch and with its `Commits:`, without asking the branch question again.
 5. **When a part is built:** merge its branch into the parent's branch and re-run the checks for the areas it touched. Resolve a conflict yourself only when both sides plainly stay whole (imports, lines next to each other). For anything else, and always in a shared contract or the `Interface`, stop, show the conflict and ask. Remove its worktree.
-6. Repeat from step 3 until every part is built. Then apply every part's `Docs to update:`, set the parent to `Status: verifying`, and say: "Run `verify <parent slug>`."
+6. Repeat from step 3 until every part is built. Then apply every part's `Docs to update:` (with `Commits: yes`, commit them), set the parent to `Status: verifying`, and say: "Run `verify <parent slug>`."
 
-Never push. Commit only on branches the user agreed to.
+Never push. Commit only with `Commits: yes`, on the spec's branch, and only the files you changed for it.

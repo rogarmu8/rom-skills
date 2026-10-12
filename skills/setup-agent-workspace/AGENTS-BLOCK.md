@@ -1,4 +1,4 @@
-<!-- rom-skills:start v0.2.2 -->
+<!-- rom-skills:start v0.2.3 -->
 ## Agent workspace (`.agents/`)
 
 `.agents/` holds what a developer on this team knows that the code doesn't say. There is one, at the repo root (`git rev-parse --show-toplevel`), even when you work in a subfolder.
@@ -23,7 +23,7 @@ Ask first, showing the exact command, before:
 One approval covers one action. No need to ask to use the app as a user would, edit tracked files, or delete files you created.
 
 ### Commits
-Never commit, push or open a PR unless the user asks. Agreeing to `implement` working on a branch covers commits and merges on that branch, for that spec only. Never push.
+Never commit, push or open a PR unless the user asks. The exception: once the user agrees at the start of a spec (`Commits: yes`), `implement` and `verify` commit, and merge a feature's parts, on its feature branch. Follow the repo's commit message style. Never skip hooks (`--no-verify`); if one fails, fix the cause. Never commit on a shared branch (the default, `main`, `master`, `develop`, release). Never push.
 
 ### Writing code
 - Better, not faster. Put the change in the right place and fix the cause, not the symptom.

@@ -1,4 +1,4 @@
-<!-- rom-skills workflow v0.2.2. Managed by setup-agent-workspace: edits here are overwritten when it updates. -->
+<!-- rom-skills workflow v0.2.3. Managed by setup-agent-workspace: edits here are overwritten when it updates. -->
 # Workflow
 
 Rules for specs and verification scripts, used by the rom-skills skills (`feature`, `implement`, `patch`, `verify`, `explain`, `review`). The rules for all work are in `AGENTS.md`.
@@ -18,8 +18,9 @@ When you create one, add it to the list in `features/README.md`.
 
 Specs live in `.agents/local/specs/`. Each is also its own progress tracker. Look for a slug in `specs/`, then in `specs/done/`.
 
-- **Where the work starts.** The skill that first changes code for a spec records it under `Status`:
+- **Where the work starts.** The skill that first changes code for a spec records it under `Status`, plus `Commits: yes` or `no` if it asked:
   - **On its own branch:** `Branch: <branch>` and `Base: <branch it was created from>`. The spec's changes are `git diff <base>...<branch>`, plus anything uncommitted while it's checked out.
+  - **On a feature branch that already existed:** `Branch: <branch>` and `Base: <commit>` (`git rev-parse HEAD`), so earlier work on the branch isn't counted. The changes are `git diff <base>...<branch>`, plus anything uncommitted.
   - **Otherwise:** `Base: <commit>` (`git rev-parse HEAD`). The changes are everything since then, committed or not (`git diff <base>`). If there are already uncommitted changes when you set it, list those files in the `Log` as not part of this spec, and leave them out.
 - **Baseline.** Before changing code for a spec, run the checks from "Before calling it done" in `AGENTS.md` once, and note in the `Log` what already fails. Only failures your change caused block you. Mention the old ones in one line; don't fix them unless asked.
 - **Ticking.** Tick a criterion only when a test or check you ran passes for it. Something a user sees needs a check through the real interface. Reading the code never counts: leave it unticked, with a `Log` line saying why.

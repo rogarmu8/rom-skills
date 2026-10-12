@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3
+
+- `implement` always asks once whether to commit after each criterion, but offers a new branch only when you're on a shared branch (the default, `main`, `master`, `develop`, release branches). On a feature branch it stays there, counting only the work since it started. It never commits on a shared branch, and asks before committing a file that already had someone else's uncommitted changes. The answer is recorded in the spec as `Commits:`, and `verify` follows it too, committing its fixes. Commits follow the repo's message style and never skip hooks. Re-run `setup-agent-workspace` to update the commit rule.
+- README: the rules section leads with verification (proof over claims), and lists the rules added in 0.2.x.
+
 ## 0.2.2
 
 - Skills check the version of the rules block in `AGENTS.md`. If it's older than the skill's minor version (0.2 here), they ask you to re-run `setup-agent-workspace`, so a skill never follows a rule the project doesn't have yet. Patch releases don't trigger it.

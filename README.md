@@ -10,7 +10,7 @@ They work in **Claude Code, Codex, Pi and VS Code / Copilot**. Only you can run 
 |---|---|
 | `setup-agent-workspace` | Map a repo once: a feature map, a glossary, how to run each part, scripts for chores that take more than one command, and shared rules. Run it again any time to audit. |
 | `feature` | Get interviewed about a new feature or change (refactors, upgrades and migrations too) until it's clear, then get a spec. Writes no code. |
-| `implement` | Build a spec test-first, one acceptance criterion at a time, optionally on its own branch with a commit per criterion. Pass a parent spec to build all its parts, in parallel if your tool has sub-agents. |
+| `implement` | Build a spec test-first, one acceptance criterion at a time, asking first whether to commit after each criterion (and, on `main`, whether to create a branch). Pass a parent spec to build all its parts, in parallel if your tool has sub-agents. |
 | `patch` | Make a small change or fix a bug end to end: reproduce it, propose a fix, build it and check it. |
 | `explain` | Get a diff, a feature or an area explained block by block, in plain words. Read-only. |
 | `review` | Review someone else's branch or PR with no prior context: does it do what it set out to do, is it correct, does it follow the repo's rules. Read-only. |
@@ -129,14 +129,14 @@ Pass the rest as arguments: `/feature let users export orders as CSV`, `/impleme
 
 ## How to use
 
-**Once per repo:** `setup-agent-workspace`. It maps the repo, writes the shared rules into `AGENTS.md`, and asks you one round of questions. Run it again any time to bring the docs back in line with the code.
+**Once per repo:** `setup-agent-workspace`. It maps the repo, writes the shared rules into `AGENTS.md` and `.agents/WORKFLOW.md`, and asks you one round of questions. Run it again any time to bring the docs back in line with the code, or after updating the skills to update the rules.
 
 **A small change or a bug:** `patch <what's wrong or what you want>`. It reproduces the bug, writes a short spec, proposes a fix and waits for your go. Then it writes a failing test, fixes the cause, runs the checks and tries it through the real app. If the work turns out bigger, it sends you to `feature`.
 
 **A new feature, refactor, upgrade or migration:**
 
 1. `feature <idea>`: it interviews you in rounds (each question comes with its recommended answer, so "yes" is often enough) and writes a spec. No code yet.
-2. `implement <slug>`: it asks whether to work on a new branch with a commit per criterion, then builds one criterion at a time, test first.
+2. `implement <slug>`: it asks once whether to commit after each criterion. On a feature branch it stays there; on `main`, `master` or `develop` it also offers to create a branch, and never commits there. Then it builds one criterion at a time, test first.
 3. `explain <slug>` (optional): what changed, in plain words.
 4. `verify <slug>`: it proves each criterion through the real app, checks the logs, fixes what fails, and marks the spec `done`.
 
@@ -147,7 +147,7 @@ Pass the rest as arguments: `/feature let users export orders as CSV`, `/impleme
 **Good to know:**
 
 - Specs live in `.agents/local/specs/`, gitignored and private to you. Each spec's `Log` tracks progress, so you can stop at any time and pick up in a new session with the same command.
-- Nothing is ever pushed. Commits happen only on a branch you agreed to.
+- Nothing is ever pushed. `implement` and `verify` commit only if you agreed at the start, only on a feature branch (never `main`, `master` or `develop`), in the repo's commit style and without skipping hooks.
 - Your agent asks before touching a database directly, flashing a device, or anything that can't be undone.
 
 ## What it adds to your repo
@@ -172,14 +172,26 @@ CLAUDE.md                 # contains "@AGENTS.md" so Claude Code reads the same 
 
 ## The rules your agent follows
 
-`setup-agent-workspace` writes these into `AGENTS.md`, so they apply in every session, even without a skill:
+The rules are built around one idea: **an agent saying it's done proves nothing; a check that ran does.** Agents often call work finished because the code looks right or compiles. Here, every claim needs evidence: a test run, a script that used the app, a log, a screenshot. Without it, the claim stays open.
 
+`setup-agent-workspace` writes the rules for all work into `AGENTS.md`, so they apply in every session, even without a skill. The rules only the skills need (specs, feature files, verification scripts) go in `.agents/WORKFLOW.md`.
+
+**Verification first**
+
+- **Proof, not reading:** a criterion is ticked only when a test or check that ran passes for it. Reading the code never counts.
+- **Through the real interface:** something a user sees is checked the way they use it, in a real browser, over HTTP or with the real command, along with the browser console, network and server logs. Passing tests and a clean compile aren't enough.
+- **Before and after:** a bug fix is shown failing before the change and passing after it. A failing test comes first, then the fix.
+- **Only new failures count:** checks that already failed before the work started are noted at the start, so the agent neither hides them nor blames itself for them.
+- **No cheating:** it never makes a check pass by deleting, skipping or loosening tests, turning off lint rules or swallowing errors. If a check seems wrong, it says why and asks.
+- **Honest reports:** it reports what actually happened. A blocked or failed command is called blocked or failed, and `verify` answers `VERIFIED`, `NOT VERIFIED` or `INCONCLUSIVE` per criterion, with evidence saved to `.agents/local/evidence/`.
+
+**Everything else**
+
+- **Done means CI would pass:** lint, format, types, build and the tests for every affected area, plus the project's own docs updated.
+- **Better code, not faster:** fix the cause, remove before adding, change only what's needed, follow existing patterns, keep it simple and secure, no new dependencies without asking. After three failed attempts at the same thing, it stops and asks.
+- **Fewer, better tests:** test behavior and edge cases through public interfaces, never trivial code. Each test must fail if the code broke in a realistic way.
+- **No commits** unless you ask, and never a push. The exception is `implement`, which asks once at the start whether to commit after each criterion. On a feature branch it stays there; on `main`, `master` or `develop` it also offers to create a branch, and never commits there. `verify` commits its fixes the same way. Merging and opening the PR stay yours.
 - **Safety:** it asks before any direct database access, and before anything that can't be undone (throwing away uncommitted work, deleting files it didn't create, force-pushing, deploys, real emails or payments, flashing a device). Editing tracked files is fine, because git can bring them back.
-- **No commits** unless you ask. `implement` asks once per spec whether to work on its own branch.
-- **Better code, not faster:** fix the cause, remove before adding, change only what's needed, follow existing patterns, no new dependencies without asking.
-- **Done means CI would pass:** lint, format, types, build and the affected tests, plus the project's own docs updated.
-- **Fewer, better tests:** test logic and edge cases, never trivial code. Each test must fail if the code broke in a realistic way.
-- **Real proof:** passing tests and a clean compile don't prove something a user sees. `verify` uses the app through its real interface and checks the browser console, the network and the server logs.
 
 ## Credits
 

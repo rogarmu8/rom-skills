@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Prove it works with evidence a skeptical reviewer would accept. "It compiles", "the tests pass" and "it should work" are not proof of something a user sees.
 
-**Changes:** `.agents/scripts/`, `.agents/local/evidence/`, the spec's checkboxes and log, the feature file's `Verify` section, and app code only to fix a failure.
+**Changes:** `.agents/scripts/`, `.agents/local/evidence/`, the spec's checkboxes and log, the feature file's `Verify` section, and app code only to fix a failure. Commits only if the spec has `Commits: yes`.
 
 ## Before you start
 
@@ -85,6 +85,7 @@ Read the spec's changes against it. Flag anything that touches `Out of scope`, o
 
 - **Spec:** tick each `VERIFIED` criterion. Add one `Log` line per criterion with its verdict and evidence, like `verify: 2 NOT VERIFIED → tooltip missing → fixed → VERIFIED (scripts/order-export/empty.mjs)`. Set `Status: done` when everything is verified; for a parent spec, on it and every part. Then move them to `specs/done/`. If the spec has a `Branch:`, tell the user it's ready to merge or open a PR. Don't do either yourself.
 - **Feature file:** in `Verify`, point to the scripts and tests that prove it, and add any gotchas you ran into.
+- **Commits:** if the spec has `Commits: yes`, commit your fixes and these updates on its branch, as `implement` does.
 
 ## Output
 
