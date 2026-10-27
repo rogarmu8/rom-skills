@@ -1,6 +1,6 @@
 ---
 name: explain
-description: Walk me through a diff, or how a feature or area works, block by block, saying what each change does in plain words and adding technical detail only where it's hard to follow. Read-only. Defaults to this branch's changes; pass a commit, range, branch, file, spec slug, or a feature or area name.
+description: Walk me through a diff, or how a feature or area works, block by block, saying what each change does in plain words and adding technical detail only where it's hard to follow. Read-only. Pass a commit, range, branch, file, spec slug, or a feature or area name; leave it out to choose what to explain.
 disable-model-invocation: true
 ---
 
@@ -12,9 +12,9 @@ Help the user understand a change, or how part of the code works, quickly, as a 
 
 ## Before you start
 
-- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make explanations better, then carry on. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, say once that re-running it would update the rules, then carry on.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If any of the root files `.agents/features/README.md`, `.agents/WORKFLOW.md` or `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
 - **Work out what to explain:**
-  - Nothing given: everything on this branch that isn't on the base branch yet, committed and uncommitted.
+  - Nothing given: ask what to explain: uncommitted changes, this branch against the base branch or another one, a commit or range, a file, a spec, or how a feature or area works. Wait for the answer. Include uncommitted changes only if the user picks them.
   - A commit, range, branch or file: that.
   - A spec slug: the spec's changes (see "Specs" in WORKFLOW.md).
   - A feature or area name: how it works today, not a diff. Start from its feature file's `Code` section (or the area in the repo map) and explain the code the same way, with steps of the flow as the blocks. Skip the spec links.

@@ -8,20 +8,20 @@ disable-model-invocation: true
 
 Build what the spec says, one acceptance criterion at a time, with the smallest clean change that does it.
 
-**Changes:** app code and tests, the project's own docs, the spec's status, checkboxes and log, and the feature file. Branches and commits only if the user agrees at the start.
+**Changes:** app code and tests, the project's own docs, the spec's status, checkboxes and log, and the feature file. Commits only with `Commits: yes` (see "Commit permission" in WORKFLOW.md). Branches only with the user's agreement.
 
 ## Before you start
 
-- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules, especially "Writing code", "Writing tests" and "Specs". If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, tell the user to re-run `setup-agent-workspace` to update the rules, and stop.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules, especially "Writing code", "Writing tests" and "Specs". If any of the root files `.agents/features/README.md`, `.agents/WORKFLOW.md` or `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
 - Open the spec. If no slug was given, list the specs whose status isn't `done` and ask which one.
 - **A parent spec** (it has `## Parts`): follow "Building the parts" below instead of the rest.
 - Read the feature file, `.agents/GLOSSARY.md` and the code in the area. Use the glossary's words in names.
 - **Part of a bigger feature** (`Part of:` under `Status`): read the parent spec, especially `Interface`, and the other parts' specs. Build only your part, against that interface, even if another part isn't built yet. If you find the interface doesn't work, stop and ask; don't change it on your own. Once agreed, update it in the parent spec.
 - **Resuming:** if the spec has a `Branch:` that isn't checked out, switch to it first (ask if there are uncommitted changes). If the `Log` has `NOT VERIFIED` entries, fix those first. Otherwise start at the first unticked criterion.
-- **Starting fresh** (no `Base:` yet): ask the branch question (below), record `Base:`, `Branch:` and `Commits:` as "Specs" in WORKFLOW.md says, then run the baseline checks (see "Specs" in WORKFLOW.md).
-- **The branch question,** asked once:
-  - **On a feature branch,** or one the user named: stay on it, and ask "Commit on `<branch>` after each criterion?"
-  - **On a shared branch** (the repo's default, `main`, `master`, `develop`, or one that looks shared like `release/*`, `staging`, `production`), or with no branch checked out: ask "Create a branch `<slug>` for this, and commit after each criterion?" Never commit on a shared branch.
+- **Starting fresh** (no `Base:` yet): record `Commits:`, `Base:` and `Branch:` as "Where the work starts" in WORKFLOW.md says, then run the baseline checks.
+- **Branches:**
+  - **On a feature branch,** or one the user named: stay on it.
+  - **On a shared branch** (the repo's default, `main`, `master`, `develop`, or one that looks shared like `release/*`, `staging`, `production`), or with no branch checked out: with `Commits: yes`, ask whether to create a branch for it, unless the user already said so. With `Commits: no`, stay where you are unless the user asks for a branch.
   - **Creating a branch** (here, or whenever the user asks for one): create it from the current branch, named the way the repo names its branches (`feature/<slug>` if others look like that), and switch to it.
   - If a file you need to change already has uncommitted changes that aren't yours, ask before your commits include it.
 - Set `Status: implementing`.
@@ -66,13 +66,13 @@ If a criterion is impossible, contradicts the code, or misses a case you've foun
 
 For a parent spec, build its parts on one branch, so `verify <parent>` can check them together.
 
-1. **Ask the branch question once** for the whole feature, as above, adding "with a branch per part merged into it". Building parts at the same time needs commits on a feature branch. Without them, build the parts one after another, without commits.
-2. Record `Base:`, `Branch:` and `Commits:` on the parent spec, and run the baseline checks once there.
+1. **Commits:** use the parent's `Commits:`. If an older parent spec has none, ask once as `feature` does, and record the answer. With `Commits: yes`, follow "Branches" above; parts built at the same time each get their own branch, merged into the feature's. With `Commits: no`, build the parts one after another, without commits.
+2. Record `Base:` and `Branch:` on the parent spec (keep an existing `Base:` when resuming), and run the baseline checks once there.
 3. **The frontier** is every part that isn't built yet (`Status` before `verifying`) and whose `Blocked by` parts are all built.
 4. **Build the frontier:**
-   - **Several parts, and your tool has sub-agents:** give each part its own sub-agent, in its own `git worktree` outside the repo, on a branch `<part slug>` created from the parent's branch. Tell it: the absolute paths to its spec and the parent spec in this checkout's `.agents/local/specs/`, to run the install from `How to run` first, to follow this skill for its spec on that branch with `Commits: yes` (no branch question), to run only its own areas' checks and never start the app, to follow "Parts built at the same time" in WORKFLOW.md, and, if it needs a decision (the spec or interface is wrong), to stop and report back instead of guessing. You ask the user and pass the answer on. If a part's worktree already exists from an earlier run, reuse it.
-   - **Otherwise:** build each part yourself, one after another, following this skill from "Before you start": on the parent's branch and with its `Commits:`, without asking the branch question again.
-5. **When a part is built:** merge its branch into the parent's branch and re-run the checks for the areas it touched. Resolve a conflict yourself only when both sides plainly stay whole (imports, lines next to each other). For anything else, and always in a shared contract or the `Interface`, stop, show the conflict and ask. Remove its worktree.
+   - **Several parts, `Commits: yes`, and your tool has sub-agents:** give each part its own sub-agent, in its own `git worktree` outside the repo, on a branch `<part slug>` created from the parent's branch. Tell it: the absolute paths to its spec and the parent spec in this checkout's `.agents/local/specs/`, to run the install from `How to run` first, to follow this skill for its spec on that branch with `Commits: yes` (without asking), to run only its own areas' checks and never start the app, to follow "Parts built at the same time" in WORKFLOW.md, and, if it needs a decision (the spec or interface is wrong), to stop and report back instead of guessing. You ask the user and pass the answer on. If a part's worktree already exists from an earlier run, reuse it.
+   - **Otherwise:** build each part yourself, one after another, following this skill from "Before you start": in the parent's checkout and with its `Commits:`, without asking again.
+5. **When a part built in its own worktree is ready:** if the parent still has `Commits: yes`, merge its branch into the parent's branch and re-run the checks for the areas it touched. Resolve a conflict yourself only when both sides plainly stay whole (imports, lines next to each other). For anything else, and always in a shared contract or the `Interface`, stop, show the conflict and ask. Remove its worktree. Sequential parts already in the parent's checkout need no merge.
 6. Repeat from step 3 until every part is built. Then apply every part's `Docs to update:` (with `Commits: yes`, commit them), set the parent to `Status: verifying`, and say: "Run `verify <parent slug>`."
 
 Never push. Commit only with `Commits: yes`, on the spec's branch, and only the files you changed for it.

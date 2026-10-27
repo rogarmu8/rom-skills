@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a branch, PR or range someone else wrote, starting with no context. Checks whether it does what it set out to do, whether it's correct, and whether it follows this repo's rules, and reports each separately. Read-only. Pass a branch, a PR number, a commit range, "since <commit or date>", or nothing for the current branch.
+description: Review uncommitted changes, a branch, PR, MR or range someone else wrote, starting with no context. Checks whether it does what it set out to do, whether it's correct, and whether it follows this repo's rules, and reports each separately. Read-only. Pass a target, or leave it out to choose what to review.
 disable-model-invocation: true
 ---
 
@@ -8,21 +8,22 @@ disable-model-invocation: true
 
 Review someone else's change the way a careful teammate would, starting from nothing but the code and its history.
 
-**Read-only.** Never edit, commit, push or comment on a PR. The only thing you may create is a temporary worktree outside the repo, if the user wants the checks run.
+**Read-only.** Never edit, commit, push or comment on a PR or MR. The only thing you may create is a temporary worktree outside the repo, if the user wants the checks run.
 
 ## Before you start
 
-- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, say once that running `setup-agent-workspace` would make reviews better, then carry on. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, say once that re-running it would update the rules, then carry on.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If any of the root files `.agents/features/README.md`, `.agents/WORKFLOW.md` or `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
 
 ## 1. Pin what to review
 
-Work out the starting point, then the diff (`git diff <start>...<end>`) and the commits (`git log --oneline <start>..<end>`):
+First establish the target. For committed changes, work out the starting point, then the diff (`git diff <start>...<end>`) and the commits (`git log --oneline <start>..<end>`):
 
+- **Uncommitted changes:** staged and unstaged changes against `HEAD`, plus untracked files. No committed changes.
 - **A branch:** from where it left the base branch to its tip. The base branch is the repo's default (`git symbolic-ref refs/remotes/origin/HEAD`, else `main` or `master`) unless the user names another.
-- **A PR number:** use the forge's CLI if there is one (`gh pr view`, `gh pr diff`), including the description and linked issues. If there isn't one, ask for the branch name.
+- **A PR or MR number or URL:** tell the host from the URL or the repo's remote (self-hosted GitLab included), and use its CLI if it's installed and logged in: `gh pr view` and `gh pr diff` for GitHub, `glab mr view` and `glab mr diff` for GitLab. Read the description and linked issues too. With no CLI, don't install one: ask for the source and target branches, and review the local diff.
 - **A range or a commit:** that.
 - **"Since <commit, tag or date>":** from that point to the tip. For a date, use the last commit before it (`git rev-list -1 --before=<date> <branch>`).
-- **Nothing:** the current branch against the base branch, plus uncommitted changes.
+- **Nothing:** ask what to review: uncommitted changes, this branch against the base branch or another one, a PR or MR, or a commit or range. Wait for the answer. Include uncommitted changes only if the user picks them.
 
 Fetch first if the branch is only on the remote. Check that the refs resolve and the diff isn't empty before going on. If the branch is far behind the base branch, say so in one line.
 
@@ -33,7 +34,7 @@ Fetch first if the branch is only on the remote. Check that the refs resolve and
 Use every source you find:
 
 1. A spec in `.agents/local/specs/` whose `Branch:` or slug matches.
-2. The PR description and linked issues.
+2. The PR or MR description and linked issues.
 3. The commit messages.
 4. Nothing found: infer the goal from the diff, and label it `inferred` in the output, so the user can correct it.
 
@@ -83,17 +84,21 @@ Keep the axes separate: a change can do exactly what was asked and still break t
 
 ## 6. Run the checks (optional)
 
-Offer once: "Run the checks on this branch?" On yes, create a `git worktree` of the branch outside the repo, in the system temp folder. Run the install from `How to run`, then the checks in "Before calling it done" for the areas it touches. Remove the worktree when done. Database and other approvals in AGENTS.md still apply.
+Offer once: "Run the checks on the reviewed code?" Skip the question if the user already asked for them.
+
+- Create a detached `git worktree` of the reviewed commit outside the repo, in the system temp folder. If the review includes uncommitted changes, copy them in (staged, unstaged, deleted and untracked files), leaving the original checkout untouched. Check that the worktree matches what you reviewed; if you can't make it match, say the checks weren't run and why.
+- Run the install from `How to run`, then the checks in "Before calling it done" for the areas it touches. Stop what you started and remove the worktree when done. Database and other approvals in AGENTS.md still apply.
+- Say whether the checks included uncommitted changes. Never present checks on other code as checks of what you reviewed.
 
 ## Output
 
 ```md
-**Goal** (from: spec | PR | commits | inferred): <one or two sentences>
+**Goal** (from: spec | PR/MR | commits | inferred): <one or two sentences>
 **Reviewed:** `<start>...<end>`, N commits, N files
 **Light look only:** <areas> (large changes only; omit otherwise)
 
 ## Intent
-- blocker: `src/export.ts:42` exports cancelled orders, but the PR says they're excluded. Fix: filter on status before writing.
+- blocker: `src/export.ts:42` exports cancelled orders, but the request says they're excluded. Fix: filter on status before writing.
 ## Correctness
 - should fix: `api/orders.py:88` an empty date range returns 500 (`?from=&to=`). Fix: validate and return 400.
 ## Standards

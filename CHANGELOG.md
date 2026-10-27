@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0
+
+Brought in the general improvements from dev-skills, rewritten in rom-skills' plain style. Re-run `setup-agent-workspace` to update the rules in a project.
+
+- **Commits are off by default.** No more commit question for ordinary specs; the skills commit only when you ask, within what you asked for. When `feature` splits a large feature into parts, it always asks once whether to enable commits for it (recommended, so parts can be checkpointed and built in parallel), and records `Commits: yes` or `no` on the parent and every part. No answer means no. The rule lives in one place: a short paragraph in the `AGENTS.md` block, the details in "Commit permission" in `WORKFLOW.md`.
+- **No version checks.** The `AGENTS.md` block and `WORKFLOW.md` no longer carry version numbers, and skills no longer ask you to re-run setup after an update. They ask only when `AGENTS.md`, `.agents/WORKFLOW.md` or `.agents/features/README.md` is missing, and then stop (`explain` and `review` included). Setup recognizes the old versioned markers and replaces them.
+- **`Base:` is always a fixed commit SHA**, kept when resuming or switching branches. A new branch's source is kept as `Base branch:` for context only. A spec's changes now include untracked files. Older specs with a branch name as `Base:` get their original commit recovered from the log, or before/after comparisons report `INCONCLUSIVE`.
+- **`.agents/PROJECT-RULES.md`:** setup creates it once and never overwrites it. Your team's rules and overrides go there and win over the skills' defaults, including answers to conflicts setup finds.
+- `review` can review uncommitted changes, supports GitLab MRs (`glab`) as well as GitHub PRs, and asks what to review when you don't say. Its checks run in a detached worktree of exactly the reviewed code, uncommitted changes copied in if they're part of it. It stays read-only.
+- `explain` asks what to explain when you don't say, instead of assuming this branch.
+- `verify` works on bug reports, branches and claims as well as specs. It matches the evidence to the claim (unit tests for logic, the real interface for what users see, mocks prove only mock handling), reuses existing tests such as Playwright suites, checks the environment is ready before driving it, isolates and cleans up its runs, and tells a broken check apart from a real bug.
+- `patch` checks the change with the test suite, then through the real interface when it can drive it; otherwise it leaves user-facing criteria unticked and suggests `verify`.
+- Feature files' `What` describes the whole feature, old and new capabilities alike; the latest change's details stay in its spec.
+- Skills may be up to about 150 lines.
+- README rewritten in a clearer layout, with `--copy` for Windows and systems without symlinks, and a manual install without Node.js.
+
 ## 0.2.3
 
 - `implement` always asks once whether to commit after each criterion, but offers a new branch only when you're on a shared branch (the default, `main`, `master`, `develop`, release branches). On a feature branch it stays there, counting only the work since it started. It never commits on a shared branch, and asks before committing a file that already had someone else's uncommitted changes. The answer is recorded in the spec as `Commits:`, and `verify` follows it too, committing its fixes. Commits follow the repo's message style and never skip hooks. Re-run `setup-agent-workspace` to update the commit rule.

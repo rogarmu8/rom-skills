@@ -12,7 +12,7 @@ A short version of `feature` + `implement` for small work: a bug fix, a tweak, a
 
 ## Before you start
 
-- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules, especially "Writing code" and "Writing tests". If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, tell the user to re-run `setup-agent-workspace` to update the rules, and stop.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules, especially "Writing code" and "Writing tests". If any of the root files `.agents/features/README.md`, `.agents/WORKFLOW.md` or `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
 - Use `.agents/features/README.md` to find the feature involved, then read its feature file and the code.
 
 ## 1. Understand
@@ -30,6 +30,7 @@ Save it to `.agents/local/specs/patch-<slug>.md`:
 ```md
 # Patch: <short title>
 Status: draft
+Commits: no
 Feature file: .agents/features/<feature>.md
 Goal: <what should be true after this>
 Repro: <steps → what happens instead>   (bugs only)
@@ -53,8 +54,8 @@ In two or three lines, say what's wrong (or what's needed), what you'll change, 
 2. **Failing test first** when there's logic or a bug: one test, at the public interface, that fails because of the problem. Trivial changes (copy, styling, config values) get no test. If the area has no test setup, see "No test setup" in WORKFLOW.md.
 3. Make the smallest clean change that fixes the cause.
 4. Run the new test and the tests nearby, then everything in "Before calling it done" in AGENTS.md.
-5. **Check it like a user would:** repeat the reproduction, or the new behavior, through the real interface. Look at the logs too (whatever the interface has: browser console and network, stderr, server, app or device output), and confirm there are no new errors. Use `.agents/scripts/` if a script covers it.
-   - Running a piece of the code on its own isn't using the real interface. If you can't drive it (for example, there's no browser driver), say so plainly, write down what you checked instead, and offer to add what's missing.
+5. **Verify it:** use the repository's test suite for the changed behavior, then repeat the reproduction, or the new behavior, through the real interface if you can drive it (the project's browser driver, the real command, an HTTP call). Look at its logs and confirm there are no new errors. Use `.agents/scripts/` if a script covers it.
+   - Running a piece of the code on its own isn't using the real interface. If you can't drive it, leave anything a user sees unticked, say what is missing, and suggest `verify`.
 6. Re-read the diff and cut anything not needed.
 7. Tick criteria following "Specs" in WORKFLOW.md. Set `Status: done` (and move the spec to `specs/done/`) only if every criterion is ticked. Add a `Log` line describing what you checked and how.
 8. If you learned something the code doesn't show, like a gotcha or how to test this, add it to the feature file (create it if missing, and add it to the list in `.agents/features/README.md`). Update the project's own docs per "Before calling it done".

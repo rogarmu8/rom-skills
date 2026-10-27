@@ -1,5 +1,5 @@
 interface:
   display_name: "Verify"
-  short_description: "Prove a spec works with real evidence"
+  short_description: "Prove claims with tests and real-interface evidence"
 policy:
   allow_implicit_invocation: false

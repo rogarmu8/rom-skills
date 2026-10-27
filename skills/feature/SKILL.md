@@ -12,7 +12,7 @@ Turn an idea into a spec that `implement` can build and `verify` can prove.
 
 ## Before you start
 
-- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If the root's `.agents/features/README.md`, `.agents/WORKFLOW.md` or the rom-skills block in `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop. If the block's version (`<!-- rom-skills:start v… -->`) is older than 0.2, ignoring the last number, tell the user to re-run `setup-agent-workspace` to update the rules, and stop.
+- Read `AGENTS.md` and `.agents/WORKFLOW.md` at the repo root (not the current folder, which may be a subproject) and follow their rules. If any of the root files `.agents/features/README.md`, `.agents/WORKFLOW.md` or `AGENTS.md` is missing, tell the user to run `setup-agent-workspace` first, and stop.
 - Read `.agents/features/README.md`, the feature files this touches, `.agents/GLOSSARY.md` and the code involved.
 
 ## Interview
@@ -38,7 +38,7 @@ Before you're done, the answers must cover: who uses this and why, the main flow
 Write these as soon as something is settled; don't save them up for the end.
 
 - **`GLOSSARY.md`:** add or fix the term (`**Term**: definition`, plus `_Avoid_: other words`). Terms only, never implementation details.
-- **Feature file:** update `What`. If the feature is new, create the file and add it to the list in `.agents/features/README.md`. Add a line to `Decisions` only if the choice is hard to undo, would surprise a future reader, and was a real trade-off.
+- **Feature file:** revise `What` only where the agreed scope changes the feature's overall description, following `.agents/WORKFLOW.md`. If the feature is new, create the file and add it to the list in `.agents/features/README.md`. Add a line to `Decisions` only if the choice is hard to undo, would surprise a future reader, and was a real trade-off.
 
 ## Test seams
 
@@ -51,6 +51,7 @@ Save it to `.agents/local/specs/<slug>.md`, where the slug is short kebab-case l
 ```md
 # <Feature>: <change>
 Status: draft
+Commits: no
 Feature file: .agents/features/<feature>.md
 
 ## Problem
@@ -94,6 +95,8 @@ How to cut the parts:
 - **A wide mechanical change** (rename a column, change a shared type used everywhere) goes expand, migrate, contract: one part adds the new form next to the old one, then parts move the callers over in batches (each blocked by the expand), then a last part removes the old form (blocked by every batch). The checks stay green after each part.
 
 Each part gets its own spec with `Part of: <parent slug>` under `Status`.
+
+**Commits:** when you split a feature, ask once: "Enable commits for this feature and its parts? I recommend it: checkpoints make it easier to resume, and parts can be built at the same time in their own worktrees." Wait for the answer, and record it on the parent and every part as "Commit permission" in WORKFLOW.md says. Don't ask for a spec that isn't split.
 
 ## Finish
 

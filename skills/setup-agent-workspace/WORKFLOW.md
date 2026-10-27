@@ -1,4 +1,4 @@
-<!-- rom-skills workflow v0.2.3. Managed by setup-agent-workspace: edits here are overwritten when it updates. -->
+<!-- rom-skills workflow. Managed by setup-agent-workspace: edits here are overwritten when it updates. -->
 # Workflow
 
 Rules for specs and verification scripts, used by the rom-skills skills (`feature`, `implement`, `patch`, `verify`, `explain`, `review`). The rules for all work are in `AGENTS.md`.
@@ -7,7 +7,7 @@ Rules for specs and verification scripts, used by the rom-skills skills (`featur
 
 One per feature, fitting on one screen, with four sections:
 
-- `What`: what users get and why they want it, in 1–3 sentences. Leave rules and edge cases to the code.
+- `What`: what users get from the feature as a whole and why they want it, in 1–3 sentences. Keep existing capabilities and new ones at the same level of detail. Leave the latest change's details to its spec, and rules and edge cases to the code.
 - `Code`: where to start reading (a file or two) and the folders involved, plus related features. No lists of functions or routes.
 - `Verify`: which scripts or tests prove it, and gotchas.
 - `Decisions`: `choice: reason`, only for choices that are hard to undo or would surprise someone.
@@ -18,10 +18,10 @@ When you create one, add it to the list in `features/README.md`.
 
 Specs live in `.agents/local/specs/`. Each is also its own progress tracker. Look for a slug in `specs/`, then in `specs/done/`.
 
-- **Where the work starts.** The skill that first changes code for a spec records it under `Status`, plus `Commits: yes` or `no` if it asked:
-  - **On its own branch:** `Branch: <branch>` and `Base: <branch it was created from>`. The spec's changes are `git diff <base>...<branch>`, plus anything uncommitted while it's checked out.
-  - **On a feature branch that already existed:** `Branch: <branch>` and `Base: <commit>` (`git rev-parse HEAD`), so earlier work on the branch isn't counted. The changes are `git diff <base>...<branch>`, plus anything uncommitted.
-  - **Otherwise:** `Base: <commit>` (`git rev-parse HEAD`). The changes are everything since then, committed or not (`git diff <base>`). If there are already uncommitted changes when you set it, list those files in the `Log` as not part of this spec, and leave them out.
+- **Commit permission.** Every spec starts with `Commits: no`, and a missing field means no too. It becomes `yes` only when the user asks for commits on this spec, or says yes when `feature` asks for a feature it splits into parts. Don't offer commits otherwise. Write in the `Log` what the user agreed to. A parent's answer covers its parts and their verification; copy it into each part, and check the parent's current answer before committing, since the user can take it back. A one-off "commit this" covers that commit only.
+- **Where the work starts.** Before changing code, record under `Status`: `Commits:`, `Base: <full commit SHA>` (`git rev-parse HEAD`), and `Branch: <branch>` if one is checked out. If you create a branch, also record `Base branch: <branch it came from>`, for information only. Never change `Base:` afterwards, even when resuming or switching branches.
+  - **The spec's changes:** `git diff <base> <branch>`, plus uncommitted and untracked files while it's checked out. With no `Branch:`, `git diff <base>` plus untracked files. If there were already uncommitted changes when you set `Base:`, list those files (or hunks) in the `Log` and leave them out.
+  - **Older specs whose `Base:` is a branch name:** find the starting commit in the `Log` or the git history and save its SHA. Never use the branch's current tip instead. If you can't find it, report before/after comparisons as `INCONCLUSIVE`.
 - **Baseline.** Before changing code for a spec, run the checks from "Before calling it done" in `AGENTS.md` once, and note in the `Log` what already fails. Only failures your change caused block you. Mention the old ones in one line; don't fix them unless asked.
 - **Ticking.** Tick a criterion only when a test or check you ran passes for it. Something a user sees needs a check through the real interface. Reading the code never counts: leave it unticked, with a `Log` line saying why.
 - **Parts built at the same time** (each in its own worktree) don't edit feature files, `GLOSSARY.md` or the repo map, since those would conflict when merged. List the changes under `Docs to update:` in the part's `Log`; whoever merges the parts applies them.

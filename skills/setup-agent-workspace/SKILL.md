@@ -15,13 +15,14 @@ Map the repo so every later session starts with the context a developer on the t
 - Work at the repo root (`git rev-parse --show-toplevel`), even if you were started in a subfolder. A monorepo gets one `.agents/` for all its areas, never one per subfolder.
 - Create `.agents/features/`, `.agents/scripts/` and `.agents/local/` if missing, even while they're still empty. The user will put files in `.agents/local/` themselves.
 - Add `.agents/local/` to `.gitignore` if it isn't there.
-- Read the rules the repo already has for agents (`AGENTS.md` and `CLAUDE.md` outside the block, `.github/copilot-instructions.md`, `.cursor/rules/`…). Note any that conflict with the block, like "commit after each step", for step 5. Never edit them without asking.
+- Create `.agents/PROJECT-RULES.md` if it's missing, with the heading `# Project rules` and the line `Project-specific rules live here.` It belongs to the project: never overwrite it.
+- Read `.agents/PROJECT-RULES.md` and the rules the repo already has for agents (`AGENTS.md` and `CLAUDE.md` outside the block, `.github/copilot-instructions.md`, `.cursor/rules/`…). The project's rules win over the block. Note any conflict they don't settle, for step 5. Never edit them without asking.
 - Put the contents of [AGENTS-BLOCK.md](AGENTS-BLOCK.md) in `AGENTS.md`, creating the file if needed:
   - **No block yet:** append it.
-  - **Block exists, different version:** replace everything between the markers.
-- Copy [WORKFLOW.md](WORKFLOW.md) to `.agents/WORKFLOW.md` if it's missing or its version differs. It belongs to rom-skills; if the user edited it, show the changes that would be lost and ask first.
+  - **Block exists, different contents:** replace it, markers included. Older blocks have a version in the start marker (`<!-- rom-skills:start v0.2.3 -->`); replace those too, never add a second block.
+- Copy [WORKFLOW.md](WORKFLOW.md) to `.agents/WORKFLOW.md` if it's missing or different. It belongs to rom-skills; if the user edited it, show the changes that would be lost and ask first.
 - Make sure `CLAUDE.md` contains the line `@AGENTS.md`, creating the file with just that line if needed. Claude Code reads `CLAUDE.md`, and other agents read `AGENTS.md`.
-- Read the block and `.agents/WORKFLOW.md`, and follow their rules from here on.
+- Read the block and `.agents/WORKFLOW.md`, and follow their rules together with `.agents/PROJECT-RULES.md` from here on.
 
 ## 2. Survey
 
@@ -90,7 +91,7 @@ Work out which chores later sessions will repeat: starting what has to be runnin
 
 ## 5. Confirm with the user
 
-Show a short summary: areas, the feature list, commands and scripts, and what you couldn't find. Then ask about anything open in a single round, each question with your recommended answer, worded so "yes" accepts it. If the repo's own agent rules conflict with the block, ask which one wins for each and apply the answer to the user's part of the file. Other typical questions are about feature boundaries ("Are Orders and Order export one feature or two?") and unclear words ("Is a 'workspace' the same as a 'team'?"). Apply the answers.
+Show a short summary: areas, the feature list, commands and scripts, and what you couldn't find. Then ask about anything open in a single round, each question with your recommended answer, worded so "yes" accepts it. For each rule conflict, ask which rule wins and write the answer in `.agents/PROJECT-RULES.md`. Other typical questions are about feature boundaries ("Are Orders and Order export one feature or two?") and unclear words ("Is a 'workspace' the same as a 'team'?"). Apply the answers.
 
 ## Re-running (audit)
 
